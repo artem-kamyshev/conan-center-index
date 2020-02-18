@@ -18,16 +18,16 @@ matrix:
       env: CONAN_REFERENCE=openssl/1.1.1d CONAN_GCC_VERSIONS=4.8 CONAN_DOCKER_IMAGE=conanio/gcc48 CONAN_ARCHS=x86_64 CONAN_BUILD_TYPES=Release
       install:
         - chmod +x ./recipes/openssl/ALL/.travis/install.sh
-        - cd ./recipes/openssl/ALL/.travis/ && ./install.sh
+        - $(cd ./recipes/openssl/ALL/.travis/ && ./install.sh)
       script:
         - chmod +x ./recipes/openssl/ALL/.travis/run.sh
-        - cd ./recipes/openssl/ALL/.travis/ && ./run.sh
+        - $(cd ./recipes/openssl/ALL/.travis/ && ./run.sh)
     - <<: *linux
       env: CONAN_REFERENCE=openssl/1.1.1d CONAN_GCC_VERSIONS=4.8 CONAN_DOCKER_IMAGE=conanio/gcc48 CONAN_ARCHS=x86_64 CONAN_BUILD_TYPES=Debug
       install:
         - chmod +x ./recipes/openssl/ALL/.travis/install.sh
-        - cd ./recipes/openssl/ALL/.travis && ./install.sh
+        - $(cd ./recipes/openssl/ALL/.travis && ./install.sh)
       script:
         - chmod +x ./recipes/openssl/ALL/.travis/run.sh
-        - cd ./recipes/openssl/ALL/.travis && ./run.sh
+        - $(cd ./recipes/openssl/ALL/.travis && ./run.sh)
                   
