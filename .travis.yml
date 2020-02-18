@@ -3,7 +3,8 @@ env:
     - CONAN_USERNAME: "artem-kamyshev"
     - CONAN_LOGIN_USERNAME: "artem-kamyshev"
     - CONAN_CHANNEL: "ci"
-    - CONAN_UPLOAD: "https://api.bintray.com/conan/trassir/conan-public"
+    - CONAN_UPLOAD: "https://api.bintray.com/conan/artem-kamyshev/conan-test"
+    - CONAN_REMOTES: "https://api.bintray.com/conan/conan/conan-center, https://api.bintray.com/conan/conan-community/conan"
 
 linux: &linux
   os: linux
