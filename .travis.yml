@@ -4,6 +4,7 @@ env:
     - CONAN_LOGIN_USERNAME: "artem-kamyshev"
     - CONAN_CHANNEL: "ci"
     - CONAN_UPLOAD: "https://api.bintray.com/conan/artem-kamyshev/conan-test"
+    - CONAN_REMOTES: "https://api.bintray.com/conan/conan/conan-center, https://api.bintray.com/conan/conan-community/conan"
 
 linux: &linux
   os: linux
@@ -15,7 +16,7 @@ linux: &linux
 matrix:
   include:
     - <<: *linux
-      env: CONAN_REFERENCE=openssl/1.1.1d CONAN_GCC_VERSIONS=4.8 CONAN_DOCKER_IMAGE=conanio/gcc48 CONAN_ARCHS=x86_64 CONAN_BUILD_TYPES=Release CONAN_OPTIONS="openssl:shared=True"
+      env: CONAN_REFERENCE=openssl/1.1.1d CONAN_GCC_VERSIONS=4.8 CONAN_DOCKER_IMAGE=conanio/gcc48 CONAN_ARCHS=x86_64 CONAN_BUILD_TYPES=Release
       install:
         - chmod +x ./recipes/openssl/ALL/.travis/install.sh
         - ./recipes/openssl/ALL/.travis/install.sh
@@ -23,7 +24,7 @@ matrix:
         - chmod +x ./recipes/openssl/ALL/.travis/run.sh
         - ./recipes/openssl/ALL/.travis/run.sh
     - <<: *linux
-      env: CONAN_REFERENCE=openssl/1.1.1d CONAN_GCC_VERSIONS=4.8 CONAN_DOCKER_IMAGE=conanio/gcc48 CONAN_ARCHS=x86_64 CONAN_BUILD_TYPES=Debug CONAN_OPTIONS="openssl:shared=True"
+      env: CONAN_REFERENCE=openssl/1.1.1d CONAN_GCC_VERSIONS=4.8 CONAN_DOCKER_IMAGE=conanio/gcc48 CONAN_ARCHS=x86_64 CONAN_BUILD_TYPES=Debug
       install:
         - chmod +x ./recipes/openssl/ALL/.travis/install.sh
         - ./recipes/openssl/ALL/.travis/install.sh
