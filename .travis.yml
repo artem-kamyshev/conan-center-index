@@ -3,7 +3,7 @@ env:
     - CONAN_USERNAME: "artem-kamyshev"
     - CONAN_LOGIN_USERNAME: "artem-kamyshev"
     - CONAN_CHANNEL: "ci"
-    - CONAN_UPLOAD: "UPLOAD_URL"
+    - CONAN_UPLOAD: "https://api.bintray.com/conan/trassir/conan-public"
 
 linux: &linux
   os: linux
