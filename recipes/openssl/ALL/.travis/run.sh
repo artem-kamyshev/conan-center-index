@@ -3,4 +3,4 @@
 set -e
 set -x
 
-python ../build.py
+cd ./recipes/openssl/ALL && ./build.py
