@@ -1,11 +1,6 @@
 name: zlib CI
 
-on:
-  pull_request:
-    paths: 'recipes/zlib/1.2.11/**'
-  push:
-    paths: 'recipes/zlib/1.2.11/**'
-
+on: [push, pull_request]
 env:
   CONAN_USERNAME: "artem-kamyshev"
   CONAN_LOGIN_USERNAME: "artem-kamyshev"
