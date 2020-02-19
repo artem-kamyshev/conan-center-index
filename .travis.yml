@@ -4,7 +4,7 @@ env:
     - CONAN_LOGIN_USERNAME: "artem-kamyshev"
     - CONAN_CHANNEL: "ci"
     - CONAN_UPLOAD: "https://api.bintray.com/conan/artem-kamyshev/conan-test"
-    - CONAN_REMOTES: "https://api.bintray.com/conan/conan-community/conan"
+    - CONAN_REVISIONS_ENABLED: 1
 linux: &linux
   os: linux
   sudo: required
