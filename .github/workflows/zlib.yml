@@ -24,7 +24,7 @@ jobs:
           python3 -m venv conan_env
           source conan_env/bin/activate
           pip install conan --upgrade
-          pip install conan_package_tools --updgrade
+          pip install conan_package_tools --upgrade
           conan user
         shell: bash
       - name: Build job
