@@ -20,6 +20,7 @@ jobs:
       - name: Install conan
         run: |
           mkdir conan_env
+          apt-get install python3-venv
           python3 -m venv conan_env
           source conan_env/bin/activate
           pip install conan --upgrade
