@@ -2,13 +2,21 @@ name: zlib CI
 
 on:
   pull_request:
-    paths: 'recipes/zlib/1.2.11/**'
+    paths:
+      - 'recipes/zlib/1.2.11/**'
+      - 'build.py'
+      - '.github/zlib.yml'
+  push:
+    branches:
+      - ci
 
 env:
   CONAN_USERNAME: "artem-kamyshev"
-  CONAN_LOGIN_USERNAME: "artem-kamyshev"
-  CONAN_CHANNEL: "ci"
+  CONAN_PASSWORD: ${{ secrets.BintrayApiKey }}
+  CONAN_STABLE_CHANNEL: "stable"
   CONAN_UPLOAD: "https://api.bintray.com/conan/artem-kamyshev/conan-test"
+  CONAN_UPLOAD_ONLY_WHEN_STABLE: 1  # stable branch pattern by default is 'master'
+  CONAN_STABLE_BRANCH_PATTERN: "ci"
   CONAN_REMOTES: "https://api.bintray.com/conan/artem-kamyshev/conan-test"
   CONAN_BUILD_TYPES: 'Release,Debug'
   CONAN_REFERENCE: 'zlib/1.2.11'
@@ -23,13 +31,29 @@ jobs:
       - name: Install conan
         run: |
           mkdir conan_env
+          sudo apt-get install python3-venv
           python3 -m venv conan_env
           source conan_env/bin/activate
+          pip install pip --upgrade
+          pip install setuptools --upgrade
           pip install conan --upgrade
-          pip install conan_package_tools --updgrade
+          pip install conan_package_tools --upgrade
           conan user
+          echo "show my path"
+          echo `pwd`
+          ls -la .
         shell: bash
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: 'sources'
       - name: Build job
-        run: cd recipes/zlib/1.2.11 && ./build.py
+        run: |
+          echo 'show my path'
+          echo `pwd`
+          ls -la .
+          source conan_env/bin/activate
+          cd sources/recipes/zlib/1.2.11
+          python ../../../build.py
         shell: bash
           
