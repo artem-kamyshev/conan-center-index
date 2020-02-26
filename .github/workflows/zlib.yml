@@ -6,12 +6,17 @@ on:
       - 'recipes/zlib/1.2.11/**'
       - 'build.py'
       - '.github/zlib.yml'
+  push:
+    branches:
+      - ci
 
 env:
   CONAN_USERNAME: "artem-kamyshev"
   CONAN_PASSWORD: ${{ secrets.BintrayApiKey }}
-  CONAN_CHANNEL: "ci"
+  CONAN_STABLE_CHANNEL: "stable"
   CONAN_UPLOAD: "https://api.bintray.com/conan/artem-kamyshev/conan-test"
+  CONAN_UPLOAD_ONLY_WHEN_STABLE: 1  # stable branch pattern by default is 'master'
+  CONAN_STABLE_BRANCH_PATTERN: "ci"
   CONAN_REMOTES: "https://api.bintray.com/conan/artem-kamyshev/conan-test"
   CONAN_BUILD_TYPES: 'Release,Debug'
   CONAN_REFERENCE: 'zlib/1.2.11'
