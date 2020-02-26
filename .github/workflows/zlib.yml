@@ -36,6 +36,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Install conan
+        # if you add support for gcc >= 5 then add creation of a new conan profile and
+        # setup of compiler.libcxx=libstdc++11 for such builds while maintaning old ABI for others
         run: |
           mkdir conan_env
           sudo apt-get install python3-venv
@@ -46,9 +48,6 @@ jobs:
           pip install conan --upgrade
           pip install conan_package_tools --upgrade
           conan user
-          echo "show my path"
-          echo `pwd`
-          ls -la .
         shell: bash
       - name: Checkout
         uses: actions/checkout@v2
@@ -56,9 +55,6 @@ jobs:
           path: 'sources'
       - name: Build job
         run: |
-          echo 'show my path'
-          echo `pwd`
-          ls -la .
           source conan_env/bin/activate
           cd sources/recipes/zlib/1.2.11
           python ../../../build.py
