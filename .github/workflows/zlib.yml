@@ -1,6 +1,6 @@
 name: zlib CI
 
-on: [push, pull_request]
+on: [pull_request]
 env:
   CONAN_USERNAME: "artem-kamyshev"
   CONAN_PASSWORD: ${{ secrets.BintrayApiKey }}
