@@ -1,6 +1,6 @@
 name: zlib CI
 
-on: [push, pull_request]
+on: [pull_request]
 env:
   CONAN_USERNAME: "artem-kamyshev"
   CONAN_PASSWORD: ${{ secrets.BintrayApiKey }}
@@ -26,7 +26,7 @@ jobs:
           pip install pip --upgrade
           pip install setuptools --upgrade
           pip install conan --upgrade
-          pip install conan_package_tools --upgrade
+          pip install conan_packagfffsssssls --upgrade
           conan user
           echo "show my path"
           echo `pwd`
