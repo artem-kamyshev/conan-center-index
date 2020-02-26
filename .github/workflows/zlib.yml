@@ -28,10 +28,13 @@ jobs:
           pip install conan --upgrade
           pip install conan_package_tools --upgrade
           conan user
+          echo "show my path"
+          echo `pwd`
+          echo `ls -la .`
         shell: bash
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build job
-        run: cd recipes/zlib/1.2.11 && python ../../../build.py
+        run: echo 'show my path'; echo `pwd`; ls -la . ; cd recipes/zlib/1.2.11 && python ../../../build.py
         shell: bash
           
