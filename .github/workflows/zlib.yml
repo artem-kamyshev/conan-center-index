@@ -30,11 +30,13 @@ jobs:
           conan user
           echo "show my path"
           echo `pwd`
-          echo `ls -la .`
+          ls -la .
         shell: bash
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          path: 'sources'
       - name: Build job
-        run: echo 'show my path'; echo `pwd`; ls -la . ; cd recipes/zlib/1.2.11 && python ../../../build.py
+        run: echo 'show my path'; echo `pwd`; ls -la . ; cd source/recipes/zlib/1.2.11 && python ../../../build.py
         shell: bash
           
