@@ -3,7 +3,7 @@ name: zlib CI
 on: [push, pull_request]
 env:
   CONAN_USERNAME: "artem-kamyshev"
-  CONAN_LOGIN_USERNAME: "artem-kamyshev"
+  CONAN_PASSWORD: ${{ secrets.BintrayApiKey }}
   CONAN_CHANNEL: "ci"
   CONAN_UPLOAD: "https://api.bintray.com/conan/artem-kamyshev/conan-test"
   CONAN_REMOTES: "https://api.bintray.com/conan/artem-kamyshev/conan-test"
