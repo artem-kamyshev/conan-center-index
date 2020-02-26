@@ -27,8 +27,9 @@ jobs:
           pip install conan_package_tools --upgrade
           conan user
         shell: bash
-      - name: Build job
+      - name: Checkout
         uses: actions/checkout@v2
+      - name: Build job
         run: cd recipes/zlib/1.2.11 && ../../../build.py
         shell: bash
           
