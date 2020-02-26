@@ -1,6 +1,12 @@
 name: zlib CI
 
-on: [pull_request]
+on:
+  pull_request:
+    paths:
+      - 'recipes/zlib/1.2.11/**'
+      - 'build.py'
+      - '.github/zlib.yml'
+
 env:
   CONAN_USERNAME: "artem-kamyshev"
   CONAN_PASSWORD: ${{ secrets.BintrayApiKey }}
