@@ -28,6 +28,7 @@ jobs:
           conan user
         shell: bash
       - name: Build job
+        uses: actions/checkout@v2
         run: cd recipes/zlib/1.2.11 && ../../../build.py
         shell: bash
           
