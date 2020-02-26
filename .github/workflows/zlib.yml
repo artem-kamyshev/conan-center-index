@@ -15,22 +15,25 @@ on:
       - '.github/workflows/zlib.yml'
 
 env:
-  CONAN_USERNAME: "artem-kamyshev"
+  CONAN_USERNAME: 'artem-kamyshev'
   CONAN_PASSWORD: ${{ secrets.BintrayApiKey }}
-  CONAN_STABLE_CHANNEL: "stable"
-  CONAN_UPLOAD: "https://api.bintray.com/conan/artem-kamyshev/conan-test"
-  CONAN_UPLOAD_ONLY_WHEN_STABLE: 1  # stable branch pattern by default is 'master'
-  CONAN_STABLE_BRANCH_PATTERN: "test_ci"
-  CONAN_REMOTES: "https://api.bintray.com/conan/artem-kamyshev/conan-test"
+  CONAN_STABLE_CHANNEL: 'stable'
+  CONAN_UPLOAD: 'https://api.bintray.com/conan/artem-kamyshev/conan-test'
+  CONAN_UPLOAD_ONLY_WHEN_STABLE: 1
+  CONAN_STABLE_BRANCH_PATTERN: 'test_ci'
+  CONAN_REMOTES: 'https://api.bintray.com/conan/artem-kamyshev/conan-test'
   CONAN_BUILD_TYPES: 'Release,Debug'
   CONAN_REFERENCE: 'zlib/1.2.11'
-  CONAN_GCC_VERSIONS: 4.8
+  CONAN_GCC_VERSIONS: '4.8'
   CONAN_DOCKER_IMAGE: 'conanio/gcc48'
-  CONAN_ARCHS: 'x86_64'
+  CONAN_ARCHS: 'x86, x86_64'
 
 jobs:
   zlib_1_2_11:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Install conan
         run: |
