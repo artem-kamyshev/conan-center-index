@@ -37,6 +37,12 @@ jobs:
         with:
           path: 'sources'
       - name: Build job
-        run: echo 'show my path'; echo `pwd`; ls -la . ; cd sources/recipes/zlib/1.2.11 && python ../../../build.py
+        run: |
+          echo 'show my path'
+          echo `pwd`
+          ls -la .
+          source conan_env/bin/activate
+          cd sources/recipes/zlib/1.2.11
+          python ../../../build.py
         shell: bash
           
