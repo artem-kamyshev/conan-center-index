@@ -30,12 +30,46 @@ jobs:
   zlib_1_2_11:
     strategy:
       matrix:
-        os: ["ubuntu-latest", "macos-latest"]
+        os: ["ubuntu-latest"]
         include:
           - os: "ubuntu-latest"
             gcc_version: '4.8'
             docker_image: 'conanio/gcc48'
             install_py3venv: 'sudo apt-get install python3-venv && python3 -m venv conan_env'
+
+    runs-on: ${{ matrix.os }}
+    env:
+      CONAN_GCC_VERSIONS: ${{ matrix.gcc_version }}
+      CONAN_DOCKER_IMAGE: ${{ matrix.docker_image }}
+    steps:
+      - name: Install conan
+        # if you add support for gcc >= 5 then add creation of a new conan profile and
+        # setup of compiler.libcxx=libstdc++11 for such builds while maintaning old ABI for others
+        run: |
+          mkdir conan_env
+          ${{ matrix.install_py3venv }}
+          source conan_env/bin/activate
+          pip install pip --upgrade
+          pip install setuptools --upgrade
+          pip install conan --upgrade
+          pip install conan_package_tools --upgrade
+          conan user
+        shell: bash
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: 'sources'
+      - name: Build job
+        run: |
+          source conan_env/bin/activate
+          cd sources/recipes/zlib/1.2.11
+          python ../../../build.py
+        shell: bash
+  zlib_1_2_11_mac:
+    strategy:
+      matrix:
+        os: ["macos-latest"]
+        include:
           - os: "macos-latest"
             xcode_version: '11.3.1'
             clang_version: '9.0.1'
@@ -43,8 +77,6 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     env:
-      CONAN_GCC_VERSIONS: ${{ matrix.gcc_version }}
-      CONAN_DOCKER_IMAGE: ${{ matrix.docker_image }}
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
       CONAN_APPLE_CLANG_VERSIONS: ${{ matrix.clang_version }}
     steps:
