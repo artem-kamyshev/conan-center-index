@@ -137,7 +137,7 @@ jobs:
           pip install conan --upgrade
           pip install conan_package_tools --upgrade
           conan user
-          git config --global core.autocrlf true
+          git config --global core.autocrlf input
         shell: bash
       - name: Checkout
         uses: actions/checkout@v2
