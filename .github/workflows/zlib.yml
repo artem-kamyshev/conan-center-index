@@ -129,7 +129,7 @@ jobs:
           mkdir conan_env
           python --version
           python -m venv conan_env
-          source conan_env/bin/activate
+          conan_env/Scripts/activate.bat
           pip install pip --upgrade
           pip install setuptools --upgrade
           pip install conan --upgrade
@@ -142,7 +142,7 @@ jobs:
           path: 'sources'
       - name: Build job
         run: |
-          source conan_env/bin/activate
+          conan_env/Scripts/activate.bat
           cd sources/recipes/zlib/1.2.11
           python ../../../build.py
         shell: bash
