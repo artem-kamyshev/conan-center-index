@@ -112,9 +112,9 @@ jobs:
         build_type: ["Release", "Debug"]
         include:
           - build_type: "Release"
-            vs_runtime: "MD,MT,LD"
+            vs_runtime: "MD,MT"
           - build_type: "Debug"
-            vs_runtime: "MDd,MTd,LDd"
+            vs_runtime: "MDd,MTd"
     runs-on: ${{ matrix.os }}
     env:
       CONAN_VISUAL_VERSIONS: '16'
