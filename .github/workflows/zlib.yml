@@ -79,6 +79,7 @@ jobs:
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
       CONAN_APPLE_CLANG_VERSIONS: ${{ matrix.clang_version }}
+      CONAN_ARCHS: 'x86_64'
     steps:
       - name: Install conan
         # if you add support for gcc >= 5 then add creation of a new conan profile and
@@ -86,6 +87,47 @@ jobs:
         run: |
           mkdir conan_env
           ${{ matrix.install_py3venv }}
+          source conan_env/bin/activate
+          pip install pip --upgrade
+          pip install setuptools --upgrade
+          pip install conan --upgrade
+          pip install conan_package_tools --upgrade
+          conan user
+        shell: bash
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: 'sources'
+      - name: Build job
+        run: |
+          source conan_env/bin/activate
+          cd sources/recipes/zlib/1.2.11
+          python ../../../build.py
+        shell: bash
+
+  zlib_1_2_11_win:
+    strategy:
+      matrix:
+        os: ["windows-2019"]
+        build_type: ["Release", "Debug"]
+        include:
+          - build_type: "Release"
+            vs_runtime: "MD,MT,LD"
+          - build_type: "Debug"
+            vs_runtime: "MDd,MTd,LDd"
+    runs-on: ${{ matrix.os }}
+    env:
+      CONAN_VISUAL_VERSIONS: '16'
+      CONAN_ARCHS: 'x86_64'
+      CONAN_VISUAL_RUNTIMES: ${{ matrix.vs_runtime }}
+      CONAN_BUILD_TYPES: ${{ matrix.build_type }}
+    steps:
+      - name: Install conan
+        # if you add support for gcc >= 5 then add creation of a new conan profile and
+        # setup of compiler.libcxx=libstdc++11 for such builds while maintaning old ABI for others
+        run: |
+          mkdir conan_env
+          python3 -m venv conan_env
           source conan_env/bin/activate
           pip install pip --upgrade
           pip install setuptools --upgrade
