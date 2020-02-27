@@ -72,7 +72,7 @@ jobs:
         include:
           - os: "macos-latest"
             xcode_version: '11.3.1'
-            clang_version: '9.0.1'
+            clang_version: '9.0'
             install_py3venv: 'pyvenv conan_env'
 
     runs-on: ${{ matrix.os }}
