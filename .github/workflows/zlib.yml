@@ -35,7 +35,7 @@ jobs:
           - os: "ubuntu-latest"
             gcc_version: '4.8'
             docker_image: 'conanio/gcc48'
-            install_py3venv: 'python3 -m venv conan_env && python3 -m venv conan_env'
+            install_py3venv: 'sudo apt-get install python3-venv && python3 -m venv conan_env'
           - os: "macos-latest"
             xcode_version: '11.3.1'
             clang_version: '9.0.1'
