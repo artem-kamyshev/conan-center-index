@@ -24,16 +24,27 @@ env:
   CONAN_REMOTES: 'https://api.bintray.com/conan/artem-kamyshev/conan-test'
   CONAN_BUILD_TYPES: 'Release,Debug'
   CONAN_REFERENCE: 'zlib/1.2.11'
-  CONAN_GCC_VERSIONS: '4.8'
-  CONAN_DOCKER_IMAGE: 'conanio/gcc48'
   CONAN_ARCHS: 'x86, x86_64'
 
 jobs:
   zlib_1_2_11:
     strategy:
       matrix:
-        os: ["ubuntu-latest"]
+        os: ["ubuntu-latest", "macos-latest"]
+        include:
+          - os: "ubuntu-latest"
+            gcc_version: '4.8'
+            docker_image: 'conanio/gcc48'
+          - os: "macos-latest"
+            xcode_version: '11.3.1'
+            clang_version: '9.0.1'
+
     runs-on: ${{ matrix.os }}
+    env:
+      CONAN_GCC_VERSIONS: ${{ matrix.gcc_version }}
+      CONAN_DOCKER_IMAGE: ${{ matrix.docker_image }}
+      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
+      CONAN_APPLE_CLANG_VERSIONS: ${{ matrix.clang_version }}
     steps:
       - name: Install conan
         # if you add support for gcc >= 5 then add creation of a new conan profile and
@@ -59,4 +70,3 @@ jobs:
           cd sources/recipes/zlib/1.2.11
           python ../../../build.py
         shell: bash
-          
