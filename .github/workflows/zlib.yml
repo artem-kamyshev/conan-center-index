@@ -22,130 +22,62 @@ env:
   CONAN_UPLOAD_ONLY_WHEN_STABLE: 1
   CONAN_STABLE_BRANCH_PATTERN: 'test_ci'
   CONAN_REMOTES: 'https://api.bintray.com/conan/artem-kamyshev/conan-test'
-  CONAN_BUILD_TYPES: 'Release,Debug'
   CONAN_REFERENCE: 'zlib/1.2.11'
-  CONAN_ARCHS: 'x86, x86_64'
 
 jobs:
   zlib_1_2_11:
     strategy:
       matrix:
-        os: ["ubuntu-latest"]
+        build: ['linux', 'windows-2019-release', 'windows-2019-debug', 'macos']
         include:
-          - os: "ubuntu-latest"
-            gcc_version: '4.8'
+          - build: 'linux'
+            os: 'ubuntu-latest'
+            compiler: 'gcc'
+            compiler_version: '4.8'
             docker_image: 'conanio/gcc48'
-            install_py3venv: 'sudo apt-get install python3-venv && python3 -m venv conan_env'
-
-    runs-on: ${{ matrix.os }}
-    env:
-      CONAN_GCC_VERSIONS: ${{ matrix.gcc_version }}
-      CONAN_DOCKER_IMAGE: ${{ matrix.docker_image }}
-    steps:
-      - name: Install conan
-        # if you add support for gcc >= 5 then add creation of a new conan profile and
-        # setup of compiler.libcxx=libstdc++11 for such builds while maintaning old ABI for others
-        run: |
-          mkdir conan_env
-          ${{ matrix.install_py3venv }}
-          source conan_env/bin/activate
-          pip install pip --upgrade
-          pip install setuptools --upgrade
-          pip install conan --upgrade
-          pip install conan_package_tools --upgrade
-          conan user
-          git config --global core.autocrlf input
-        shell: bash
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          path: 'sources'
-      - name: Build job
-        run: |
-          source conan_env/bin/activate
-          cd sources/recipes/zlib/1.2.11
-          python ../../../build.py
-        shell: bash
-  zlib_1_2_11_mac:
-    strategy:
-      matrix:
-        os: ["macos-latest"]
-        include:
-          - os: "macos-latest"
+            build_types: 'Release,Debug'
+            archs: 'x86,x86_64'
+          - build: 'windows-2019-release'
+            os: 'windows-2019'
+            build_types: 'Release'
+            compiler: 'vs'
+            compiler_version: '16'
+            vs_runtimes: 'MD,MT'
+            archs: 'x86_64'
+          - build: 'windows-2019-debug'
+            os: 'windows-2019'
+            build_types: 'Debug'
+            compiler: 'vs'
+            compiler_version: '16'
+            vs_runtimes: 'MDd,MTd'
+            archs: 'x86_64'
+          - build: 'macos'
+            os: 'macos-latest'
+            build_types: 'Release,Debug'
+            archs: 'x86_64'
+            compiler: 'apple_clang'
+            compiler_version: '11.0'
             xcode_version: '11.3.1'
-            clang_version: '11.0'
-            install_py3venv: 'pyvenv conan_env'
-
     runs-on: ${{ matrix.os }}
-    env:
-      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
-      CONAN_APPLE_CLANG_VERSIONS: ${{ matrix.clang_version }}
-      CONAN_ARCHS: 'x86_64'
     steps:
-      - name: Install conan
-        # if you add support for gcc >= 5 then add creation of a new conan profile and
-        # setup of compiler.libcxx=libstdc++11 for such builds while maintaning old ABI for others
-        run: |
-          mkdir conan_env
-          ${{ matrix.install_py3venv }}
-          source conan_env/bin/activate
-          pip install pip --upgrade
-          pip install setuptools --upgrade
-          pip install conan --upgrade
-          pip install conan_package_tools --upgrade
-          conan user
-          git config --global core.autocrlf input
-        shell: bash
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          path: 'sources'
-      - name: Build job
-        run: |
-          source conan_env/bin/activate
-          cd sources/recipes/zlib/1.2.11
-          python ../../../build.py
-        shell: bash
-
-  zlib_1_2_11_win:
-    strategy:
-      matrix:
-        os: ["windows-2019"]
-        build_type: ["Release", "Debug"]
-        include:
-          - build_type: "Release"
-            vs_runtime: "MD,MT"
-          - build_type: "Debug"
-            vs_runtime: "MDd,MTd"
-    runs-on: ${{ matrix.os }}
-    env:
-      CONAN_VISUAL_VERSIONS: '16'
-      CONAN_ARCHS: 'x86_64'
-      CONAN_VISUAL_RUNTIMES: ${{ matrix.vs_runtime }}
-      CONAN_BUILD_TYPES: ${{ matrix.build_type }}
-    steps:
-      - name: Install conan
-        # if you add support for gcc >= 5 then add creation of a new conan profile and
-        # setup of compiler.libcxx=libstdc++11 for such builds while maintaning old ABI for others
-        run: |
-          mkdir conan_env
-          python --version
-          python -m venv conan_env
-          conan_env/Scripts/activate.bat
-          pip install pip --upgrade
-          pip install setuptools --upgrade
-          pip install conan --upgrade
-          pip install conan_package_tools --upgrade
-          conan user
-          git config --global core.autocrlf input
-        shell: bash
-      - name: Checkout
-        uses: actions/checkout@v2
+          path: sources
+      - name: Setup Python
+        uses: actions/setup-python@v1
         with:
-          path: 'sources'
-      - name: Build job
-        run: |
-          conan_env/Scripts/activate.bat
-          cd sources/recipes/zlib/1.2.11
-          python ../../../build.py
-        shell: bash
+          python-version: '3.x'
+      - name: Build and Optionally Upload
+        uses: trassir/run-cpt@enhanced
+        with:
+          work-dir: sources/recipes/zlib/1.2.11
+          build-script: ../../../build.py
+          compiler: ${{ matrix.compiler }}
+          compiler-versions: ${{ matrix.compiler_version }}
+          docker-images: ${{ matrix.docker_image }}
+        env:
+          CONAN_VISUAL_RUNTIMES: ${{ matrix.vs_runtimes }}
+          CONAN_ARCHS: ${{ matrix.archs }}
+          CONAN_BUILD_TYPES: ${{ matrix.build_types }}
+          DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode_version }}.app/Contents/Developer
