@@ -15,9 +15,7 @@ on:
       - '.github/workflows/zlib.yml'
 
 env:
-  CONAN_USERNAME: 'artem-kamyshev'
   CONAN_PASSWORD: ${{ secrets.BintrayApiKey }}
-  CONAN_STABLE_CHANNEL: 'stable'
   CONAN_UPLOAD: 'https://api.bintray.com/conan/artem-kamyshev/conan-test'
   CONAN_UPLOAD_ONLY_WHEN_STABLE: 1
   CONAN_STABLE_BRANCH_PATTERN: 'test_ci'
