@@ -86,7 +86,7 @@ jobs:
         with:
           python-version: '3.x'
       - name: Build and Optionally Upload
-        uses: trassir/run-cpt@enhanced
+        uses: trassir/run-cpt@v0.2.1-trassir
         with:
           work-dir: sources/recipes/zlib/1.2.11
           build-script: ../../../build.py
