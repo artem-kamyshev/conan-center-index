@@ -74,6 +74,9 @@ jobs:
             xcode_version: '11.3.1'
     runs-on: ${{ matrix.os }}
     steps:
+      - name: Configure git
+        run: git config --global core.autocrlf input
+        shell: bash
       - name: Checkout
         uses: actions/checkout@v2
         with:
@@ -90,7 +93,6 @@ jobs:
           compiler: ${{ matrix.compiler }}
           compiler-versions: ${{ matrix.compiler_version }}
           docker-images: ${{ matrix.docker_image }}
-          lf-endings: true
         env:
           CONAN_VISUAL_RUNTIMES: ${{ matrix.vs_runtimes }}
           CONAN_ARCHS: ${{ matrix.archs }}
